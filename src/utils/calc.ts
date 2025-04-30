@@ -19,6 +19,7 @@ export interface CalculatorResult {
     probabilities: { [key: number]: number };
     odds: { [key: number]: number };
     oddsReduce: { [key: number]: number };
+    oddsReduce2: { [key: number]: number };
     info: string;
   };
 
@@ -26,6 +27,7 @@ export interface CalculatorResult {
     probabilities: number;
     odds: number;
     oddsReduce: number;
+    oddsReduce2: number;
     info: string;
   };
 
@@ -33,6 +35,7 @@ export interface CalculatorResult {
     probabilities: number;
     odds: number;
     oddsReduce: number;
+    oddsReduce2: number;
     info: string;
   };
 
@@ -40,6 +43,7 @@ export interface CalculatorResult {
     probabilities: { [key: number]: number };
     odds: { [key: number]: number };
     oddsReduce: { [key: number]: number };
+    oddsReduce2: { [key: number]: number };
     info: string;
   };
 
@@ -47,6 +51,7 @@ export interface CalculatorResult {
     probabilities: { [key: number]: number };
     odds: { [key: number]: number };
     oddsReduce: { [key: number]: number };
+    oddsReduce2: { [key: number]: number };
     info: string;
   };
 
@@ -54,6 +59,7 @@ export interface CalculatorResult {
     probabilities: number[][];
     odds: number[][];
     oddsReduce: number[][];
+    oddsReduce2: number[][];
     info: string;
   };
 
@@ -61,6 +67,7 @@ export interface CalculatorResult {
     probabilities: { [key: number]: number };
     odds: { [key: number]: number };
     oddsReduce: { [key: number]: number };
+    oddsReduce2: { [key: number]: number };
     info: string;
   };
 }
@@ -92,6 +99,7 @@ export const calculateOdds = (data: CalculatorInput): CalculatorResult => {
   const starProbabilities: { [key: number]: number } = {};
   const starOdds: { [key: number]: number } = {};
   const starOddsReduce: { [key: number]: number } = {};
+  const starOddsReduce2: { [key: number]: number } = {};
   let starInfo: string = '';
   try {
     for (let i = 2; i <= 5; i++) {
@@ -99,7 +107,7 @@ export const calculateOdds = (data: CalculatorInput): CalculatorResult => {
       starProbabilities[i] = starProbability;
       starOdds[i] = 1 / starProbability;
       starOddsReduce[i] = starOdds[i] * reduce;
-
+      starOddsReduce2[i] = (starOdds[i] - 1) * reduce + 1;
     }
   } catch (error) {
     starInfo = (error as Error).message;
@@ -109,11 +117,13 @@ export const calculateOdds = (data: CalculatorInput): CalculatorResult => {
   let specialProbability: number = 0;
   let specialCodeOdds: number = 0;
   let specialCodeOddsReduce: number = 0;
+  let specialCodeOddsReduce2: number = 0;
   let specialInfo: string = '';
   try {
     specialProbability = specialBallCount / totalBallCount;
     specialCodeOdds = 1 / specialProbability;
     specialCodeOddsReduce = specialCodeOdds * reduce;
+    specialCodeOddsReduce2 = (specialCodeOdds - 1) * reduce + 1;
   } catch (error) {
     specialInfo = (error as Error).message;
   }
@@ -121,7 +131,8 @@ export const calculateOdds = (data: CalculatorInput): CalculatorResult => {
   const notHitProbabilities: { [key: number]: number } = {};
   const notHitOdds: { [key: number]: number } = {};
   const notHitOddsReduce: { [key: number]: number } = {};
-  let notHitInfo: string = '';
+  const notHitOddsReduce2: { [key: number]: number } = {};
+  let notHitInfo: string = '';  
   try {
     // 5~12選不中
     for (let i = 5; i <= 12; i++) {
@@ -129,6 +140,7 @@ export const calculateOdds = (data: CalculatorInput): CalculatorResult => {
       notHitProbabilities[i] = notHitProbability;
       notHitOdds[i] = 1 / notHitProbability;
       notHitOddsReduce[i] = notHitOdds[i] * reduce;
+      notHitOddsReduce2[i] = (notHitOdds[i] - 1) * reduce + 1;
     }
   } catch (error) {
     notHitInfo = (error as Error).message;
@@ -139,11 +151,13 @@ export const calculateOdds = (data: CalculatorInput): CalculatorResult => {
   let allCarProbability: number = 0;
   let allCarOdds: number = 0;
   let allCarOddsReduce: number = 0;
+  let allCarOddsReduce2: number = 0;
   let allCarInfo: string = '';
   try {
-    allCarProbability = 1 - takeBallCount / totalBallCount;
+    allCarProbability = takeBallCount / totalBallCount;
     allCarOdds = 1 / allCarProbability;
     allCarOddsReduce = allCarOdds * reduce;
+    allCarOddsReduce2 = (allCarOdds - 1) * reduce + 1;  
   } catch (error) {
     allCarInfo = (error as Error).message;
   }
@@ -153,6 +167,7 @@ export const calculateOdds = (data: CalculatorInput): CalculatorResult => {
   const specialStarProbabilities: { [key: number]: number } = {};
   const specialStarOdds: { [key: number]: number } = {};
   const specialStarOddsReduce: { [key: number]: number } = {};
+  const specialStarOddsReduce2: { [key: number]: number } = {};
   let specialStarInfo: string = '';
   try {
     for (let i = 2; i <= 3; i++) {
@@ -160,6 +175,7 @@ export const calculateOdds = (data: CalculatorInput): CalculatorResult => {
       specialStarProbabilities[i] = specialStarProbability;
       specialStarOdds[i] = 1 / specialStarProbability;
       specialStarOddsReduce[i] = specialStarOdds[i] * reduce;
+      specialStarOddsReduce2[i] = (specialStarOdds[i] - 1) * reduce + 1;
     }
   } catch (error) {
     specialStarInfo = (error as Error).message;
@@ -172,7 +188,8 @@ export const calculateOdds = (data: CalculatorInput): CalculatorResult => {
   // const probabilities = calculateLottoProbabilities(totalBallCount, takeBallCount);
   let tableProbabilities: number[][] = [];
   let tableOdds: number[][] = [];
-  let tableOddsReduce: number[][] = [];
+  let tableOddsReduce: number[][] = []; 
+  let tableOddsReduce2: number[][] = [];
   let tableInfo: string = '';
   try {
     tableProbabilities = calculateTable(totalBallCount, takeBallCount);
@@ -185,10 +202,16 @@ export const calculateOdds = (data: CalculatorInput): CalculatorResult => {
       });
     });
 
-    // 將賠率轉換成賠率減少
+    // 將賠率轉換成折扣後的賠率
     tableOddsReduce = tableOdds.map(row => {
       return row.map(odds => {
         return odds * reduce;
+      });
+    });
+
+    tableOddsReduce2 = tableOddsReduce.map(row => {
+      return row.map(oddsReduce => {
+        return (oddsReduce - 1) * reduce + 1;
       });
     });
   } catch (error) {
@@ -198,6 +221,7 @@ export const calculateOdds = (data: CalculatorInput): CalculatorResult => {
   let specialThreeProbabilities: { [key: number]: number } = {};
   const specialThreeOdds: { [key: number]: number } = {};
   const specialThreeOddsReduce: { [key: number]: number } = {};
+  const specialThreeOddsReduce2: { [key: number]: number } = {};
   let specialThreeInfo: string = '';
   try {
     // 特三
@@ -211,6 +235,9 @@ export const calculateOdds = (data: CalculatorInput): CalculatorResult => {
     keys.forEach(key => {
       specialThreeOddsReduce[Number(key)] = specialThreeOdds[Number(key)] * reduce;
     });
+    keys.forEach(key => {
+      specialThreeOddsReduce2[Number(key)] = (specialThreeOdds[Number(key)] - 1) * reduce + 1;
+    });
   } catch (error) {
     specialThreeInfo = (error as Error).message;
   }
@@ -221,42 +248,49 @@ export const calculateOdds = (data: CalculatorInput): CalculatorResult => {
       probabilities: starProbabilities,
       odds: starOdds,
       oddsReduce: starOddsReduce,
+      oddsReduce2: starOddsReduce2,
       info: starInfo
     },
     allCar: {
       probabilities: allCarProbability,
       odds: allCarOdds,
       oddsReduce: allCarOddsReduce,
+      oddsReduce2: allCarOddsReduce2,
       info: allCarInfo
     },
     special: {
       probabilities: specialProbability,
       odds: specialCodeOdds,
       oddsReduce: specialCodeOddsReduce,
+      oddsReduce2: specialCodeOddsReduce2,
       info: specialInfo
     },
     specialStar: {
       probabilities: specialStarProbabilities,
       odds: specialStarOdds,
       oddsReduce: specialStarOddsReduce,
+      oddsReduce2: specialStarOddsReduce2,
       info: specialStarInfo
     },
     notHit: {
       probabilities: notHitProbabilities,
       odds: notHitOdds,
       oddsReduce: notHitOddsReduce,
+      oddsReduce2: notHitOddsReduce2,
       info: notHitInfo
     },
     table: {
       probabilities: tableProbabilities,
       odds: tableOdds,
       oddsReduce: tableOddsReduce,
+      oddsReduce2: tableOddsReduce2,
       info: tableInfo
     },
     specialThree: {
       probabilities: specialThreeProbabilities,
       odds: specialThreeOdds,
       oddsReduce: specialThreeOddsReduce,
+      oddsReduce2: specialThreeOddsReduce2,
       info: specialThreeInfo
     }
   }

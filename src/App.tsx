@@ -1,7 +1,10 @@
+import type { CalculatorResult } from './utils/calc';
+
 import React, { useState } from 'react';
 import { calculateOdds } from './utils/calc';
 import Result from './components/Result';
-import type { CalculatorResult } from './utils/calc';
+import Line from './components/Line';
+
 import './App.css';
 const App: React.FC = () => {
   const [totalBallCount, setTotalBallCount] = useState<number>(42);
@@ -9,6 +12,7 @@ const App: React.FC = () => {
   const [specialBallCount, setSpecialBallCount] = useState<number>(1);
   const [reduce, setReduce] = useState<number>(0.7);
   const [result, setResult] = useState<CalculatorResult | null>(null);
+  const [showLine, setShowLine] = useState<boolean>(false);
 
   const handleCalculate = () => {
     const data = {
@@ -20,7 +24,6 @@ const App: React.FC = () => {
     const odds = calculateOdds(data);
     setResult(odds);
   };
-
 
   return (
     <div className="container">
@@ -72,7 +75,10 @@ const App: React.FC = () => {
           />
         </div>
         <button onClick={handleCalculate}>計算</button>
+        <button onClick={() => setShowLine(!showLine)}>顯示特三線表(再按一次關閉)</button>
       </div>
+
+      {showLine && <Line />}
       {result && <Result result={result} />}
     </div>
 
