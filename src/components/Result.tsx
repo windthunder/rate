@@ -41,28 +41,47 @@ const Result: React.FC<ResultProps> = ({ result }) => {
             <table>
               <tbody>
                 <tr>
-                  <td colSpan={3}>星</td>
+                  <td colSpan={4}>星</td>
                   <td>全車</td>
                   <td>特碼</td>
                   <td colSpan={2}>天碰</td>
+                  <td colSpan={8}>反轉樂</td>
                 </tr>
                 <tr>
                   <td>2</td>
                   <td>3</td>
                   <td>4</td>
+                  <td>5</td>
                   <td></td>
                   <td></td>
                   <td>2</td>
                   <td>3</td>
+                  <td>5</td>
+                  <td>6</td>
+                  <td>7</td>
+                  <td>8</td>
+                  <td>9</td>
+                  <td>10</td>
+                  <td>11</td>
+                  <td>12</td>
                 </tr>
                 <tr>
                   <td>{result.star[item][2].toFixed(decimalPlaces)}</td>
                   <td>{result.star[item][3].toFixed(decimalPlaces)}</td>
                   <td>{result.star[item][4].toFixed(decimalPlaces)}</td>
+                  <td>{result.star[item][5].toFixed(decimalPlaces)}</td>
                   <td>{result.allCar[item].toFixed(decimalPlaces)}</td>
                   <td>{result.special[item].toFixed(decimalPlaces)}</td>
                   <td>{result.specialStar[item][2].toFixed(decimalPlaces)}</td>
                   <td>{result.specialStar[item][3].toFixed(decimalPlaces)}</td>
+                  <td>{result.notHit[item][5].toFixed(decimalPlaces)}</td>
+                  <td>{result.notHit[item][6].toFixed(decimalPlaces)}</td>
+                  <td>{result.notHit[item][7].toFixed(decimalPlaces)}</td>
+                  <td>{result.notHit[item][8].toFixed(decimalPlaces)}</td>
+                  <td>{result.notHit[item][9].toFixed(decimalPlaces)}</td>
+                  <td>{result.notHit[item][10].toFixed(decimalPlaces)}</td>
+                  <td>{result.notHit[item][11].toFixed(decimalPlaces)}</td>
+                  <td>{result.notHit[item][12].toFixed(decimalPlaces)}</td>
                 </tr>
               </tbody>
             </table>

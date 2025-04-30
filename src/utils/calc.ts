@@ -88,13 +88,13 @@ const calcStar = (totalBallCount: number, takeBallCount: number, star: number): 
 export const calculateOdds = (data: CalculatorInput): CalculatorResult => {
   const { totalBallCount, takeBallCount, specialBallCount, reduce } = data;
 
-  // 二三四星機率
+  // 2~5星機率
   const starProbabilities: { [key: number]: number } = {};
   const starOdds: { [key: number]: number } = {};
   const starOddsReduce: { [key: number]: number } = {};
   let starInfo: string = '';
   try {
-    for (let i = 2; i <= 4; i++) {
+    for (let i = 2; i <= 5; i++) {
       const starProbability = calcStar(totalBallCount, takeBallCount, i);
       starProbabilities[i] = starProbability;
       starOdds[i] = 1 / starProbability;
