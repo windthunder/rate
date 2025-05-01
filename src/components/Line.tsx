@@ -30,8 +30,6 @@ const getResult = () => {
 const Line: React.FC = () => {
   const result = getResult();
 
-  console.log(result);
-
   return (
     <div className="line">
       <table>

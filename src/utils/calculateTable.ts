@@ -30,9 +30,8 @@ const convertIntermediateToResult = (intermediateResult: number[][][], totalBall
   // 將中間的全組合數表轉換成台號組合表
   for (let position = 1; position < takeBallCount; position++) {
     for (let firstNumber = 1; firstNumber < totalBallCount; firstNumber++) {
-      for (let secondNumber = 1; secondNumber < totalBallCount; secondNumber++) {
+      for (let secondNumber = firstNumber + 1; secondNumber < totalBallCount; secondNumber++) {
         const count = intermediateResult[position][firstNumber][secondNumber];
-        // console.log(firstNumber, secondNumber, count);
         resultTable[firstNumber % 10][secondNumber % 10] += count;
       }
     }

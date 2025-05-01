@@ -1,18 +1,10 @@
-/**
- * 計算特三的機率
- * @param totalBallCount 總球數
- * @param takeBallCount 取球數
- * @param specialBallCount 特別號數量
- * @returns 特三的機率
- */
-
 import { combination } from "./math";
 
-const calcResult = (allPossible: number[][][], totalBallCount: number): {[key: number]: number} => {
-  const result: {[key: number]: number} = {};
+const calcResult = (allPossible: number[][][], totalBallCount: number): { [key: number]: number } => {
+  const result: { [key: number]: number } = {};
   for (let firstNumber = 1; firstNumber <= totalBallCount; firstNumber++) {
-    for (let secondNumber = 1; secondNumber <= totalBallCount; secondNumber++) {
-      for (let thirdNumber = 1; thirdNumber <= totalBallCount; thirdNumber++) {
+    for (let secondNumber = firstNumber + 1; secondNumber <= totalBallCount; secondNumber++) {
+      for (let thirdNumber = secondNumber + 1; thirdNumber <= totalBallCount; thirdNumber++) {
         let a = (secondNumber % 10) - (firstNumber % 10)
         if (a <= 0) {
           a += 10;
@@ -30,7 +22,6 @@ const calcResult = (allPossible: number[][][], totalBallCount: number): {[key: n
       }
     }
   }
-  // console.log(result);
   return result;
 };
 
@@ -112,10 +103,11 @@ const calcAllPossible = (totalBallCount: number, takeBallCount: number): number[
             break;
           }
           // 前面的可能性
-          const beforeCombination = combination(firstNumber - 1, 1);
+          const beforeCombination = combination(firstNumber - 1, 2);
           // 後面的可能性
-          const afterCombination = combination(totalBallCount - thirdNumber, 2);
+          const afterCombination = combination(totalBallCount - thirdNumber, 1);
           allCombinations[firstNumber][secondNumber][thirdNumber] = beforeCombination * afterCombination;
+          console.log(firstNumber, secondNumber, thirdNumber, allCombinations[firstNumber][secondNumber][thirdNumber]);
         }
       }
     }
@@ -123,8 +115,13 @@ const calcAllPossible = (totalBallCount: number, takeBallCount: number): number[
   return allCombinations;
 };
 
-
-export const calcSpecialThree = (totalBallCount: number, takeBallCount: number): {[key: number]: number} => {
+/**
+ * 計算特三的機率
+ * @param totalBallCount 總球數
+ * @param takeBallCount 取球數
+ * @returns 特三的機率
+ */
+export const calcSpecialThree = (totalBallCount: number, takeBallCount: number): { [key: number]: number } => {
   // 驗證takeballcount是否為5或6 因為除此之外的條件不明
   if (takeBallCount !== 5 && takeBallCount !== 6) {
     throw new Error('總取球數必須為5或6');

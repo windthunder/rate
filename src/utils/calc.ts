@@ -228,7 +228,6 @@ export const calculateOdds = (data: CalculatorInput): CalculatorResult => {
     // 特三很奇怪 在5球規則下特三是第234顆球的狀態 但6球時是345 然後要想一下怎麼考慮特三的排版
     specialThreeProbabilities = calcSpecialThree(totalBallCount, takeBallCount);
     const keys = Object.keys(specialThreeProbabilities);
-    console.log(keys);
     keys.forEach(key => {
       specialThreeOdds[Number(key)] = 1 / specialThreeProbabilities[Number(key)];
     });

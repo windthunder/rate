@@ -95,11 +95,11 @@ const Result: React.FC<ResultProps> = ({ result }) => {
                     <td key={number}>{number}</td>
                   ))}
                 </tr>
-                {numbers.map((secondNumber) => (
-                  <tr key={secondNumber}>
-                    <td>{secondNumber}</td>
-                    {numbers.map((firstNumber) => (
-                      <td key={firstNumber}>{result.table[item][firstNumber][secondNumber].toFixed(decimalPlaces)}</td>
+                {numbers.map((firstNumber) => (
+                  <tr key={firstNumber}>
+                    <td>{firstNumber}X</td>
+                    {numbers.map((secondNumber) => (
+                      <td key={secondNumber}>{result.table[item][firstNumber][secondNumber].toFixed(decimalPlaces)}</td>
                     ))}
                   </tr>
                 ))}
