@@ -112,12 +112,29 @@ const Result: React.FC<ResultProps> = ({ result }) => {
             {result.specialThree.info === '' ? (
               <table>
                 <tbody>
-                  {Object.keys(result.specialThree[item]).map((key) => (
-                    <tr key={key}>
-                      <td>{key}</td>
-                      <td>{result.specialThree[item][Number(key)].toFixed(decimalPlaces)}</td>
-                    </tr>
-                  ))}
+                  <tr>
+                    <td>線數</td>
+                    <td>基礎賠率</td>
+                    <td>組數</td>
+                    <td>組數 x 賠率</td>
+                  </tr>
+                  {Object.keys(result.specialThree[item]).map((key) => {
+                    const keyNumber = Number(key);
+                    const rate = result.specialThree[item][keyNumber];
+                    const group = (11 - Math.abs(11 - keyNumber) - 1) * 10;
+                    return (
+                      <tr key={key}>
+                        <td>{key}</td>
+                        <td>{rate.toFixed(decimalPlaces)}</td>
+                        <td>
+                          {group}
+                        </td>
+                        <td>
+                          {(group * rate).toFixed(decimalPlaces)}
+                        </td>
+                      </tr>
+                    )
+                  })}
                 </tbody>
               </table>
             ) : (

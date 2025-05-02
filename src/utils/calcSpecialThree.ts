@@ -107,7 +107,6 @@ const calcAllPossible = (totalBallCount: number, takeBallCount: number): number[
           // 後面的可能性
           const afterCombination = combination(totalBallCount - thirdNumber, 1);
           allCombinations[firstNumber][secondNumber][thirdNumber] = beforeCombination * afterCombination;
-          console.log(firstNumber, secondNumber, thirdNumber, allCombinations[firstNumber][secondNumber][thirdNumber]);
         }
       }
     }
@@ -129,6 +128,7 @@ export const calcSpecialThree = (totalBallCount: number, takeBallCount: number):
 
   // 先展開所有可能性
   const allPossible = calcAllPossible(totalBallCount, takeBallCount);
+
   // 再組合成結果
   const result = calcResult(allPossible, totalBallCount);
   // 再計算機率
