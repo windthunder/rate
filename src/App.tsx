@@ -7,7 +7,7 @@ import Line from './components/Line';
 
 import './App.css';
 const App: React.FC = () => {
-  const [totalBallCount, setTotalBallCount] = useState<number>(42);
+  const [totalBallCount, setTotalBallCount] = useState<number>(49);
   const [takeBallCount, setTakeBallCount] = useState<number>(6);
   const [specialBallCount, setSpecialBallCount] = useState<number>(1);
   const [reduce, setReduce] = useState<number>(0.7);
@@ -23,7 +23,19 @@ const App: React.FC = () => {
     };
     const odds = calculateOdds(data);
     setResult(odds);
-  };
+  }
+
+  const default1 = function () {
+    setTotalBallCount(49);
+    setTakeBallCount(6);
+    setSpecialBallCount(1);
+  }
+
+  const default2 = function () {
+    setTotalBallCount(39);
+    setTakeBallCount(5);
+    setSpecialBallCount(0);
+  }
 
   return (
     <div className="container">
@@ -73,6 +85,11 @@ const App: React.FC = () => {
             step={0.01}
             onChange={(e) => setReduce(Number(e.target.value))}
           />
+        </div>
+        {/* 預設值組 49-6-1 39-5-0 */}
+        <div className="form-group" style={{ display: 'flex', justifyContent: 'space-between', width: '300px' }}>
+          <button style={{ width: '40%', backgroundColor: '#666', color: '#fff' }} onClick={default1}>49-6-1</button>
+          <button style={{ width: '40%', backgroundColor: '#666', color: '#fff' }} onClick={default2}>39-5-0</button>
         </div>
         <button onClick={handleCalculate}>計算</button>
         <button onClick={() => setShowLine(!showLine)}>顯示特三線表(再按一次關閉)</button>
