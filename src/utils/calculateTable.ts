@@ -5,7 +5,6 @@
  *
 */
 
-// TODO: 二次中獎 甚至三次中獎的狀況的可能性追加
 import { combination } from './math';
 
 const calculateProbabilityTable = (result: number[][], totalBallCount: number, takeBallCount: number): number[][] => {
@@ -21,24 +20,11 @@ const calculateProbabilityTable = (result: number[][], totalBallCount: number, t
     }
   }
 
+  // const probabilityTable = result;
+
   return probabilityTable;
 }
 
-const convertIntermediateToResult = (intermediateResult: number[][][], totalBallCount: number, takeBallCount: number): number[][] => {
-  const resultTable = Array(10).fill(0).map(() => Array(10).fill(0));
-
-  // 將中間的全組合數表轉換成台號組合表
-  for (let position = 1; position < takeBallCount; position++) {
-    for (let firstNumber = 1; firstNumber < totalBallCount; firstNumber++) {
-      for (let secondNumber = firstNumber + 1; secondNumber < totalBallCount; secondNumber++) {
-        const count = intermediateResult[position][firstNumber][secondNumber];
-        resultTable[firstNumber % 10][secondNumber % 10] += count;
-      }
-    }
-  }
-
-  return resultTable;
-}
 
 /**
  * 計算中間結果
@@ -46,47 +32,79 @@ const convertIntermediateToResult = (intermediateResult: number[][][], totalBall
  * @param takeBallCount 取球數
  * @returns 中間結果 在所有位置連續那兩個數出現的可能組合 這個方便驗算 後面再轉換成台號需要的結構
  */
-const calculateIntermediateResult = (totalBallCount: number, takeBallCount: number) => {
-  // 初始化三維陣列
-  const intermediateResult: number[][][] = Array(takeBallCount + 1)
-    .fill(0)
-    .map(() =>
-      Array(totalBallCount + 1)
-        .fill(0)
-        .map(() =>
-          Array(totalBallCount + 1).fill(0)
-        )
-    );
+/** 遞迴函數來生成所有可能的組合
+ * @param totalBallCount 總球數
+ * @param takeBallCount 取球數
+ * @returns 所有可能的組合 [[1,2,3,4,5,6], [1,2,3,4,5,7], ...] 這樣的結果
+ *
+*/
+export const generateCombinations = (
+  totalBallCount: number,
+  takeBallCount: number,
+  callback: (combination: number[]) => void
+) => {
+  const stack: { current: number[], start: number }[] = [];
 
+  // 初始化堆疊
+  stack.push({ current: [], start: 1 });
 
-  for (let position = 1; position < takeBallCount; position++) {
-    for (let firstNumber = 1; firstNumber <= totalBallCount; firstNumber++) {
-      // 第一數小於 position的狀況 跳過 不可能發生
-      if (firstNumber < position) {
-        continue;
-      }
+  while (stack.length > 0) {
+    const { current, start } = stack.pop()!;
 
-      // 第一數大於 totalBallCount - takeBallCount + 1的狀況 中止 因為這不可能正常完成排序
-      if (firstNumber > totalBallCount - takeBallCount + position) {
-        break;
-      }
-      for (let secondNumber = firstNumber + 1; secondNumber <= totalBallCount; secondNumber++) {
-        // 第二數大於 totalBallCount - takeBallCount + 2的狀況 中止 因為這不可能正常完成排序
-        if (secondNumber > totalBallCount - takeBallCount + position + 1) {
-          break;
-        }
-        // 計算可能的組合數
-        const combinationCount =
-          combination(firstNumber - 1, position - 1) * // 也就是第一個數字前面比它小的數字的總組合數
-          combination(totalBallCount - secondNumber, takeBallCount - position - 1); // 也就是第二個數字後面比它大的數字的總組合數
+    if (current.length === takeBallCount) {
+      callback([...current]);
+      continue;
+    }
 
-        intermediateResult[position][firstNumber][secondNumber] = combinationCount;
-      }
+    // 從大到小遍歷，這樣pop出來的順序會是從小到大
+    for (let i = totalBallCount; i >= start; i--) {
+      stack.push({ current: [...current, i], start: i + 1 });
     }
   }
+};
 
-  // 輸出中間結果進行驗算
-  return intermediateResult;
+/**
+ * 計算中間結果2
+ * @param totalBallCount 總球數
+ * @param takeBallCount 取球數
+ * @returns 中間結果2 在所有位置連續那兩個數出現的可能組合 這個方便驗算 後面再轉換成台號需要的結構
+ */
+const calculateResult = (totalBallCount: number, takeBallCount: number) => {
+  // 先列出所有可能的組合
+  const tableResult: number[][] = Array(10).fill(0).map(() => Array(10).fill(0));
+
+  generateCombinations(totalBallCount, takeBallCount, (combination) => {
+    // 取得所有個位數
+    const digits = combination.map(num => num % 10);
+    // 組合出台號
+    const tableNumbers: string[] = [];
+    digits.forEach((digit, index) => {
+        const nextDigit = digits[index + 1];
+        if (nextDigit === undefined) { // nextDigit 有可能是0 但那是正常的
+            return;
+        }
+        tableNumbers.push(digit.toString() + nextDigit.toString());
+    });
+
+    // 現在tableNumbers 是台號的string 陣列 將她轉換成台號 - 數量hash
+    const tableNumberHash: Record<string, number> = {};
+    tableNumbers.forEach(tableNumber => {
+      tableNumberHash[tableNumber] = (tableNumberHash[tableNumber] || 0) + 1;
+      // 如果數量超過2則等於2
+      if (tableNumberHash[tableNumber] > 2) {
+        tableNumberHash[tableNumber] = 2;
+      }
+    });
+
+    // 拆解台號
+    for (const [tableNumberString, count] of Object.entries(tableNumberHash)) {
+      // 如果數量是2則等於2
+      const tableNumber = tableNumberString.split('').map(Number);
+      tableResult[tableNumber[0]][tableNumber[1]] += count;
+    }
+
+  });
+  return tableResult;
 }
 
 export const calculateTable = (totalBallCount: number, takeBallCount: number) => {
@@ -94,7 +112,6 @@ export const calculateTable = (totalBallCount: number, takeBallCount: number) =>
   if (takeBallCount < 2) {
     throw new Error('takeBallCount不能小於2');
   }
-  const intermediateResult = calculateIntermediateResult(totalBallCount, takeBallCount);
-  const resultTable = convertIntermediateToResult(intermediateResult, totalBallCount, takeBallCount);
-  return calculateProbabilityTable(resultTable, totalBallCount, takeBallCount);
+  const result = calculateResult(totalBallCount, takeBallCount);
+  return calculateProbabilityTable(result, totalBallCount, takeBallCount);
 }

@@ -149,4 +149,4 @@ const Result: React.FC<ResultProps> = ({ result }) => {
   );
 };
 
-export default Result; 
+export default Result;

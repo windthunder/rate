@@ -132,7 +132,7 @@ export const calculateOdds = (data: CalculatorInput): CalculatorResult => {
   const notHitOdds: { [key: number]: number } = {};
   const notHitOddsReduce: { [key: number]: number } = {};
   const notHitOddsReduce2: { [key: number]: number } = {};
-  let notHitInfo: string = '';  
+  let notHitInfo: string = '';
   try {
     // 5~12選不中
     for (let i = 5; i <= 12; i++) {
@@ -157,7 +157,7 @@ export const calculateOdds = (data: CalculatorInput): CalculatorResult => {
     allCarProbability = takeBallCount / totalBallCount;
     allCarOdds = 1 / allCarProbability;
     allCarOddsReduce = allCarOdds * reduce;
-    allCarOddsReduce2 = (allCarOdds - 1) * reduce + 1;  
+    allCarOddsReduce2 = (allCarOdds - 1) * reduce + 1;
   } catch (error) {
     allCarInfo = (error as Error).message;
   }
@@ -188,7 +188,7 @@ export const calculateOdds = (data: CalculatorInput): CalculatorResult => {
   // const probabilities = calculateLottoProbabilities(totalBallCount, takeBallCount);
   let tableProbabilities: number[][] = [];
   let tableOdds: number[][] = [];
-  let tableOddsReduce: number[][] = []; 
+  let tableOddsReduce: number[][] = [];
   let tableOddsReduce2: number[][] = [];
   let tableInfo: string = '';
   try {
