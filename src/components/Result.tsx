@@ -13,11 +13,16 @@ interface ResultProps {
 //   一個額外的table 顯示特三尾線表
 
 const Result: React.FC<ResultProps> = ({ result }) => {
-  const mainItems = ['odds', 'oddsReduce', 'oddsReduce2', 'probabilities'] as const;
+  const mainItems = [
+    'odds',
+    // 'oddsReduce',
+    'oddsReduce2',
+    'probabilities'
+  ] as const;
   const titles = {
     odds: '賠率',
-    oddsReduce: '折扣後賠率 賠率 * 折扣',
-    oddsReduce2: '折扣後賠率2 (賠率 - 1) * 折扣 + 1',
+    // oddsReduce: '折扣後賠率 賠率 * 折扣',
+    oddsReduce2: '折扣後賠率 (賠率 - 1) * 折扣 + 1',
     probabilities: '機率'
   }
 
